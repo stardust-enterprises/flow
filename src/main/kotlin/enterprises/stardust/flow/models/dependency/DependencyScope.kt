@@ -11,7 +11,7 @@ open class DependencyScope : Model<Project> {
     operator fun invoke(block: DependencyScope.() -> Unit) = block()
     operator fun invoke(vararg deps: String) = deps.forEach { dependencies.add(defaultConfiguration to it) }
 
-    fun gradlePlugin(id: String, version: String? = null): String =
+    fun gradle(id: String, version: String? = null): String =
         "$id:${id}.gradle.plugin${version?.let { ":$it" }}"
 
     fun kotlin(id: String): String = "org.jetbrains.kotlin:kotlin-$id"
