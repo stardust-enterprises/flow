@@ -24,7 +24,7 @@ fun <T : Activatable> configurator(stuff: T, also: (T) -> Unit = {}): ReadOnlyPr
 open class ProjectMetadata(
     var group: String? = inherit,
     var version: String? = inherit,
-    var description: String? = unset,
+    var description: String? = inherit,
 ) : Model<Project> {
     internal lateinit var project: Project
 

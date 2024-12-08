@@ -6,5 +6,5 @@ pluginManagement {
 }
 
 plugins {
-    id("enterprises.stardust.flow.root") version "0.1.7"
+    id("enterprises.stardust.flow.root") version "0.1.8"
 }
