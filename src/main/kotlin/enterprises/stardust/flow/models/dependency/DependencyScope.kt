@@ -24,6 +24,14 @@ open class DependencyScope : Model<Project> {
         dependencies.add(defaultConfiguration to this)
     }
 
+    operator fun String.unaryMinus() {
+        dependencies.add("compileOnly" to this)
+    }
+
+    operator fun String.not() {
+        dependencies.add("testImplementation" to this)
+    }
+
     override fun consume0(target: Project) {
         dependencies.forEach { (config, dep) -> target.dependencies.add(config, dep) }
     }
