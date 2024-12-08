@@ -25,7 +25,6 @@ open class ProjectMetadata(
     var group: String? = inherit,
     var version: String? = inherit,
     var description: String? = unset,
-    var vendor: String? = unset,
 ) : Model<Project> {
     internal lateinit var project: Project
 

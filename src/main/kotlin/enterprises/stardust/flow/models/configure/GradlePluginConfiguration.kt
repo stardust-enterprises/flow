@@ -1,10 +1,8 @@
 package enterprises.stardust.flow.models.configure
 
-import enterprises.stardust.flow.Activatable
-import enterprises.stardust.flow.Model
-import enterprises.stardust.flow.consume
+import com.gradle.publish.PublishPlugin
+import enterprises.stardust.flow.*
 import enterprises.stardust.flow.models.ProjectMetadata
-import enterprises.stardust.flow.unset
 import org.gradle.api.HasImplicitReceiver
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -25,7 +23,7 @@ class GradlePluginConfiguration(
     var plugins: MutableList<Pair<String, String>> = mutableListOf(),
     var displayName: String? = unset,
     var description: String? = unset,
-    var website: String? = unset,
+    var website: String? = inherit,
     var tags: MutableList<String> = mutableListOf(),
 ) : Model<Project>, Activatable {
     override var activated: Boolean = false
@@ -69,18 +67,20 @@ class GradlePluginConfiguration(
     override fun consume0(target: Project) = target.run {
         logger.lifecycle("<*> GradlePluginConfiguration.consume0")
 
+        val metadata = extensions.getByName<ProjectMetadata>(FLOW_EXTENSION_NAME)
+        metadata.scm.consume(this)
+
+        val websiteUrl = website.orInherit("website", metadata.scm.url)
+
         dependencies {
             "compileOnly"(gradleKotlinDsl())
             "compileOnly"(gradleApi())
         }
 
-        val metadata = extensions.getByName<ProjectMetadata>(FLOW_EXTENSION_NAME)
-        metadata.scm.consume(this)
-
         pluginManager.apply(JavaGradlePluginPlugin::class.java)
         extensions.configure(GradlePluginDevelopmentExtension::class.java) {
             vcsUrl.set(metadata.scm.url)
-            this@GradlePluginConfiguration.website?.let { website.set(it) }
+            website.set(websiteUrl)
             plugins {
                 pluginsBlock()
             }
@@ -96,5 +96,10 @@ class GradlePluginConfiguration(
         extensions.configure(AssignmentExtension::class.java) {
             annotation(SupportsKotlinAssignmentOverloading::class.qualifiedName!!)
         }
+
+        // Apply the gradle-publish plugin
+        plugins.apply(PublishPlugin::class.java)
+
+        Unit
     }
 }
