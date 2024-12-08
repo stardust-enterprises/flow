@@ -3,18 +3,21 @@ package enterprises.stardust.flow.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.resolve.RepositoriesMode
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.maven
 import org.gradle.toolchains.foojay.FoojayToolchainsConventionPlugin
 
+fun ExtraPropertiesExtension.find(key: String): String? = if (has(key)) get(key).toString() else null
+
 open class FlowRootPlugin : Plugin<Settings> {
     @Suppress("UnstableApiUsage")
     override fun apply(target: Settings) = target.run {
-        val exclusive = extra["flow.root.repositories.exclusive"]?.toString()?.toBoolean() == true
-        val mavenLocal = extra["flow.root.repositories.mavenLocal"]?.toString()?.toBoolean() == true
-        val jitpack = extra["flow.root.repositories.jitpack"]?.toString()?.toBoolean() == true
+        val noExclusive = extra.find("flow.root.repositories.exclusive")?.toBoolean() == false
+        val mavenLocal = extra.find("flow.root.repositories.mavenLocal")?.toBoolean() == true
+        val jitpack = extra.find("flow.root.repositories.jitpack")?.toBoolean() == true
         dependencyResolutionManagement {
-            if (exclusive) {
+            if (!noExclusive) {
                 repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
             }
             repositories {

@@ -217,7 +217,7 @@ class JavaConfiguration(
                 } else {
                     val gradlePluginMarkerPublications = metadata._gradle.plugins.map { it.first }
                         .map { it.replace(".", "_") }
-                        .map { "${it}PluginsMarkerMaven" }
+                        .map { "${it}PluginMarkerMaven" }
                         .toTypedArray().takeIf { it.size > 1 } ?: arrayOf("defaultPluginMarkerMaven")
 
                     // FIXME: figure out how to configure a container object lazily

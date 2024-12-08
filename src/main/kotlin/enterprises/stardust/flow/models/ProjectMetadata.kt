@@ -20,6 +20,7 @@ fun <T : Activatable> configurator(stuff: T, also: (T) -> Unit = {}): ReadOnlyPr
             }
     }
 
+@Suppress("PropertyName")
 open class ProjectMetadata(
     var group: String? = inherit,
     var version: String? = inherit,
@@ -36,9 +37,9 @@ open class ProjectMetadata(
     var licenses = LicensesMetadata()
     var developers = DevelopersMetadata()
 
-    private val _java = JavaConfiguration()
+    internal val _java = JavaConfiguration()
     val java by configurator(_java)
-    private val _kotlin = KotlinConfiguration()
+    internal val _kotlin = KotlinConfiguration()
     val kotlin by configurator(_kotlin) { java }
     internal val _gradle = GradlePluginConfiguration()
     val gradlePlugin by configurator(_gradle) { kotlin }
