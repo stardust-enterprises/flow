@@ -23,4 +23,7 @@ internal fun <T> Model<T>.consume(target: T) {
     }
     this.validate()
     this.consume0(target)
+    if (this is Activatable) {
+        this.activated = false
+    }
 }

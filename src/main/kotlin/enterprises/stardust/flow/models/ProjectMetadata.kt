@@ -52,6 +52,8 @@ open class ProjectMetadata(
     )
 
     override fun consume0(target: Project) {
+        target.logger.lifecycle("<!> ProjectMetadata.consume0(" + target.name + ")")
+
         target.group = group.orInherit("group", target.parent?.let { "${it.group}.${it.name}" } ?: target.properties["group"])!!
         target.version = version.orInherit("version", target.parent?.version ?: target.properties["version"])!!
         target.description = description.orInherit("description", target.descriptionFromReadme)

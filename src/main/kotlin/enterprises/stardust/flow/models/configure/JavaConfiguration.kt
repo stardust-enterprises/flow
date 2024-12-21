@@ -134,7 +134,7 @@ class JavaConfiguration(
 
                     // Wrapper task since calling both one after the other in IntelliJ
                     // seems to cause some problems.
-                    create("releaseToSonatype") {
+                    register("releaseToSonatype") {
                         group = "publishing"
 
                         dependsOn(

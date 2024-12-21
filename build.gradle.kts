@@ -16,8 +16,7 @@ project {
     }
 
     gradlePlugin {
-        plugins += ("enterprises.stardust.flow" to "enterprises.stardust.flow.gradle.FlowEntrypointPlugin")
-        plugins += ("enterprises.stardust.flow.root" to "enterprises.stardust.flow.gradle.FlowRootPlugin")
+        plugins += ("enterprises.stardust.flow" to "enterprises.stardust.flow.gradle.FlowPlugin")
         displayName = "Flow"
         description = "Boilerplate-be-gone, the Gradle plugin."
         tags += arrayOf("java", "scaffold", "boilerplate")
